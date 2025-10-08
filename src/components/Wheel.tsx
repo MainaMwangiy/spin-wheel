@@ -18,7 +18,7 @@ const Wheel: React.FC<WheelProps> = ({
 }) => {
   const [rotation, setRotation] = useState(0);
   const [isSpinning, setIsSpinning] = useState(false);
-  const wheelRef = useRef<HTMLDivElement>(null);
+  const wheelInnerRef = useRef<HTMLDivElement>(null);
   const segmentAngle = 360 / segments.length;
 
   const handleSpin = () => {
@@ -57,12 +57,14 @@ const Wheel: React.FC<WheelProps> = ({
 
   return (
     <div className="wheel-container">
-      <div 
-        ref={wheelRef}
-        className="wheel"
-        style={{ transform: `rotate(${rotation}deg)` }}
-      >
-        <div className="wheel-inner">
+      <div className="wheel-pointer"></div>
+      
+      <div className="wheel">
+        <div 
+          ref={wheelInnerRef}
+          className="wheel-inner"
+          style={{ transform: `rotate(${rotation}deg)` }}
+        >
           {segments.map((segment, index) => {
             const angle = index * segmentAngle;
             return (
@@ -89,6 +91,7 @@ const Wheel: React.FC<WheelProps> = ({
           <span className="wheel-center-text">SPIN</span>
         </div>
       </div>
+      <div className="wheel-border"></div>
     </div>
   );
 };
