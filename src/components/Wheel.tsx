@@ -1,17 +1,67 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
+import { WheelSegment, SpinResult } from '../types';
+import { SPIN_DURATION, MIN_ROTATIONS } from '../constants';
 import '../assets/Wheel.css';
-import { WheelSegment } from '../types';
 
 interface WheelProps {
   segments: WheelSegment[];
+  targetSegment: number;
+  onSpinStart: () => void;
+  onSpinComplete: (result: SpinResult) => void;
 }
 
-const Wheel: React.FC<WheelProps> = ({ segments }) => {
+const Wheel: React.FC<WheelProps> = ({ 
+  segments, 
+  targetSegment,
+  onSpinStart,
+  onSpinComplete 
+}) => {
+  const [rotation, setRotation] = useState(0);
+  const [isSpinning, setIsSpinning] = useState(false);
+  const wheelRef = useRef<HTMLDivElement>(null);
   const segmentAngle = 360 / segments.length;
+
+  const handleSpin = () => {
+    if (isSpinning) return;
+    
+    setIsSpinning(true);
+    onSpinStart();
+    const targetAngle = targetSegment * segmentAngle;
+    const minRotation = 360 * MIN_ROTATIONS;
+    const finalRotation = minRotation + (360 - targetAngle) + (segmentAngle / 2);
+    const startTime = Date.now();
+    const startRotation = rotation;
+
+    const animate = () => {
+      const elapsed = Date.now() - startTime;
+      const progress = Math.min(elapsed / SPIN_DURATION, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const currentRotation = startRotation + (finalRotation * eased);
+      
+      setRotation(currentRotation);
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        setIsSpinning(false);
+        const prize = segments[targetSegment];
+        onSpinComplete({
+          segmentId: prize.id,
+          prize: prize.label
+        });
+      }
+    };
+
+    requestAnimationFrame(animate);
+  };
 
   return (
     <div className="wheel-container">
-      <div className="wheel">
+      <div 
+        ref={wheelRef}
+        className="wheel"
+        style={{ transform: `rotate(${rotation}deg)` }}
+      >
         <div className="wheel-inner">
           {segments.map((segment, index) => {
             const angle = index * segmentAngle;
@@ -31,7 +81,11 @@ const Wheel: React.FC<WheelProps> = ({ segments }) => {
             );
           })}
         </div>
-        <div className="wheel-center">
+        <div 
+          className="wheel-center"
+          onClick={handleSpin}
+          style={{ cursor: isSpinning ? 'not-allowed' : 'pointer' }}
+        >
           <span className="wheel-center-text">SPIN</span>
         </div>
       </div>

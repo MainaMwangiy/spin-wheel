@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Wheel from './components/Wheel';
+import { WheelSegment, SpinResult } from './types';
+import { SPIN_OUTCOME } from './constants';
 import './App.css';
-import { WheelSegment } from './types';
 
 const segments: WheelSegment[] = [
   { id: 0, label: '50 FS', color: '#C41E3A' },
@@ -13,10 +14,26 @@ const segments: WheelSegment[] = [
 ];
 
 function App() {
+  const [result, setResult] = useState<string>('');
+
+  const handleSpinStart = () => {
+    setResult('Spinning...');
+  };
+
+  const handleSpinComplete = (spinResult: SpinResult) => {
+    setResult(`You won: ${spinResult.prize}!`);
+  };
+
   return (
     <div className="App">
       <h1>Fortune Wheel</h1>
-      <Wheel segments={segments} />
+      <Wheel 
+        segments={segments}
+        targetSegment={SPIN_OUTCOME}
+        onSpinStart={handleSpinStart}
+        onSpinComplete={handleSpinComplete}
+      />
+      {result && <p className="result-text">{result}</p>}
     </div>
   );
 }
