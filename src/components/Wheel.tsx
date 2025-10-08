@@ -1,14 +1,7 @@
 import React, { useState, useRef } from 'react';
-import { WheelSegment, SpinResult } from '../types';
+import { WheelProps } from '../types';
 import { SPIN_DURATION, MIN_ROTATIONS } from '../constants';
 import '../assets/Wheel.css';
-
-interface WheelProps {
-  segments: WheelSegment[];
-  targetSegment: number;
-  onSpinStart: () => void;
-  onSpinComplete: (result: SpinResult) => void;
-}
 
 const Wheel: React.FC<WheelProps> = ({ 
   segments, 

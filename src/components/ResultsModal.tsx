@@ -1,11 +1,6 @@
 import React from 'react';
 import '../assets/ResultsModal.css';
-
-interface ResultModalProps {
-  isOpen: boolean;
-  prize: string;
-  onClose: () => void;
-}
+import { ResultModalProps } from '../types';
 
 const ResultModal: React.FC<ResultModalProps> = ({ isOpen, prize, onClose }) => {
   if (!isOpen) return null;

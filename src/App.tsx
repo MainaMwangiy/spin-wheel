@@ -2,17 +2,10 @@ import React, { useState } from 'react';
 import Wheel from './components/Wheel';
 import ResultModal from './components/ResultsModal';
 import { WheelSegment, SpinResult } from './types';
-import { SPIN_OUTCOME } from './constants';
+import { SEGMENTS, SPIN_OUTCOME } from './constants';
 import './App.css';
 
-const segments: WheelSegment[] = [
-  { id: 0, label: '50 FS', color: '#C41E3A' },
-  { id: 1, label: '100% FIRST DEPOSIT BONUS', color: '#1B5E20' },
-  { id: 2, label: '€50', color: '#C41E3A' },
-  { id: 3, label: 'NEXT SPIN', color: '#1B5E20' },
-  { id: 4, label: 'SPIN AGAIN', color: '#C41E3A' },
-  { id: 5, label: 'WELCOME BONUS', color: '#1B5E20' }
-];
+const segments: WheelSegment[] = SEGMENTS;
 
 function App() {
   const [showModal, setShowModal] = useState(false);
