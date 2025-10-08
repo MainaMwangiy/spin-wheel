@@ -10,6 +10,8 @@ A React + TypeScript implementation of the required landing screen, focusing on 
 ![Results After Spin](<Results After Spin.png>)
 ![Landing Page UI Mobile](<Landing Page Mobile.png>)
 
+<video controls src="Spin Wheel.mp4" title="Spin Wheel Functionality"></video>
+
 ## Features Implemented
 - **Landing Screen**: Interactive spinner wheel with 6 segments. Matches original colors (gold, red, yellow) and tiger theme.
 - **Spinner Functionality**: Smooth CSS-based rotation animation with easing. Predetermined stopping point via `SPIN_OUTCOME` constant (0-5).
